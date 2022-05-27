@@ -1,0 +1,125 @@
+import 'dart:io';
+import 'package:camera/camera.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import '../Firebase/StorageMethods.dart';
+import '../home/home.dart';
+
+class newEntry extends StatefulWidget {
+  final XFile image;
+  final String ClassName;
+  const newEntry({Key? key,required this.image,required this.ClassName}) : super(key: key);
+
+  @override
+  _newEntryState createState() => _newEntryState();
+}
+
+class _newEntryState extends State<newEntry> {
+  @override
+  bool _isLoading = false;
+  void AddToFirebase(
+    //String className,
+    String RollNo,
+    String StudentName,
+    String StudentId,
+    XFile StudentImage,
+      )async {
+    setState(() {
+      _isLoading = false;
+    });
+    try {
+      print("Entered");
+      File file = File(StudentImage.path);
+      String result = await Storagetypes().newStudent(className:widget.ClassName, RollNo:RollNo, StudentName:StudentName, StudentId:StudentId,Imagefile:file);
+      if (result == "success") {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+    catch (e) {
+      print("Error");
+      print(e.toString());
+      print("Error");
+    }
+  }
+
+  final TextEditingController _UniversityId = TextEditingController();
+  final TextEditingController _StudentName = TextEditingController();
+  final TextEditingController _StudentRollNo = TextEditingController();
+  final TextEditingController _StudentClass = TextEditingController();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.cyan,
+        appBar: AppBar(
+          title: Text(
+            'New Student',
+          ),
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            TextField(
+              controller: _StudentName,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                //labelText: 'NAME',
+                hintText: 'Enter Name',
+                hintStyle: TextStyle(
+                  color: Colors.teal,
+                ),
+              ),
+            ),
+            TextField(
+              controller: _StudentRollNo,
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                //labelText: 'WEIGHT',
+                hintText: 'Enter Class Roll Number',
+                hintStyle: TextStyle(
+                  color: Colors.teal,
+                ),
+              ),
+            ),
+            /*TextField(
+              controller: _StudentClass,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                //labelText: 'NAME',
+                hintText: 'Enter Class Name',
+                hintStyle: TextStyle(
+                  color: Colors.teal,
+                ),
+              ),
+            ), */
+            TextField(
+              controller: _UniversityId,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                //labelText: 'NAME',
+                hintText: 'Enter University Roll Number',
+                hintStyle: TextStyle(
+                  color: Colors.teal,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                 AddToFirebase(_StudentRollNo.text,_StudentName.text,_UniversityId.text,widget.image);
+
+                 Home();
+              },
+              child: Text(
+                'Add',
+              ),
+            ),
+          ],
+        ));
+  }
+}
