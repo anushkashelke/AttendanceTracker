@@ -18,7 +18,8 @@ class _StudentRecordsState extends State<StudentRecords> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Classroom'),
+        backgroundColor: Colors.blue[900],
+        title: Text('Students'),
       ),
       body: Column(
         children: [
@@ -73,14 +74,20 @@ class _StudentRecordsState extends State<StudentRecords> {
                       child: Container(
                         width: 350,
                         child: Card(
-                          color: Colors.red[200],
+                          color: Colors.red[100],
                           margin: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 20.0),
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+                            padding: const EdgeInsets.fromLTRB(10,10, 10,10),
                             child: ListTile(
                               title: Text(
                                 (snapshot.data! as dynamic).docs[index]['Name'],
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  color: Colors.purple[900],
+                                  fontSize: 20,
+                                ),
                               ),
                             ),
                           ),

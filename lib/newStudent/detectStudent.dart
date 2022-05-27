@@ -3,6 +3,7 @@ import 'package:attendance/newStudent/newStudent.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:lottie/lottie.dart';
 import 'dart:io';
 import '../Services/MLKitService.dart';
 import '../Services/cameraService.dart';
@@ -10,6 +11,7 @@ import '../Services/faceNetService.dart';
 import 'package:attendance/face recognition/facePainter.dart';
 import '../face recognition/auth_button.dart';
 import '../face recognition/cameraHeader.dart';
+import '../home/home.dart';
 
 class FaceDetect extends StatefulWidget {
   final CameraDescription cameraDescription;
@@ -37,6 +39,7 @@ class _FaceDetectState extends State<FaceDetect> {
   late Size imageSize;
   Face? detectedFace;
   late XFile imgXfile;
+  bool noFaceDetected = false;
   void initState() {
     super.initState();
     //detectedFace = null as Face;
@@ -64,9 +67,9 @@ class _FaceDetectState extends State<FaceDetect> {
     _cameraService.cameraController.startImageStream((image) async {
       if (_cameraService.cameraController != null) {
         if (isSaved) {
-        //if a image was already clicked but user wants to create another img , so previous shouldn't be considered
-        isSaved = false;
-        _faceNetService.setCurrentPrediction(image, detectedFace!,false);
+          //if a image was already clicked but user wants to create another img , so previous shouldn't be considered
+          isSaved = false;
+          _faceNetService.setCurrentPrediction(image, detectedFace!, false);
         }
         if (isFaceDetected) return;
 
@@ -105,20 +108,20 @@ class _FaceDetectState extends State<FaceDetect> {
 
   Future<bool> whenClicked() async {
     if (isFaceDetected == false) {
-      print("Checkkkkkkkkkkk");
-      print("Checkkkkkkkkkkk");
-      print("Checkkkkkkkkkkk");
-      print("Checkkkkkkkkkkk");
-      print("Checkkkkkkkkkkk");
-      showDialog(
+      _cameraService.cameraController.stopImageStream();
+      setState(() {
+        noFaceDetected = true;
+        isCaptureVisible = true;
+      });
+      /*showDialog(
           context: context,
           builder: (context) {
-            return AlertDialog(
-              content: Text(
-                'No Face Detected !',
+            return Container(
+              child: Text(
+                'No Face Was Detected',
               ),
             );
-          });
+          }); */
       return false;
     } else {
       isSaved = true;
@@ -167,14 +170,12 @@ class _FaceDetectState extends State<FaceDetect> {
               future: FutureController,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
-                  if (isImageTaken) {
+                  if (isImageTaken && isFaceDetected) {
                     //if image is clicked display the image
                     //Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>ShowImage(image: imgXfile)),);
                     return Scaffold(
-                      appBar: AppBar(
-                        title: Text('New Student'),
-                      ),
                       body: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(10),
@@ -196,26 +197,107 @@ class _FaceDetectState extends State<FaceDetect> {
                               ),
                             ),
                           ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => newEntry(
-                                      image: imgXfile,
-                                      ClassName: widget.ClassName),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => newEntry(
+                                        image: imgXfile,
+                                        ClassName: widget.ClassName),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'Proceed',
+                                style: TextStyle(
+                                  color: Colors.indigo,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
                                 ),
-                              );
-                            },
-                            child: Text('Proceed'),
+                              ),
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Colors.blue[100])),
+                            ),
                           ),
-                          TextButton(
-                            onPressed: onDiscardOfCapturedImage,
-                            child: Text('Click Another Image'),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Home()));
+                              },
+                              child: Text(
+                                'Home',
+                                style: TextStyle(
+                                  color: Colors.indigo,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Colors.blue[100])),
+                            ),
                           ),
                         ],
                       ),
                     );
+                  } else if (noFaceDetected) {
+                    return Scaffold(
+                        backgroundColor: Colors.pink[100],
+                        body: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            LottieBuilder.network(
+                              'https://assets8.lottiefiles.com/private_files/lf30_04qvoilv.json',
+                              height: 300,
+                              animate: true,
+                              repeat: true,
+                              reverse: true,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Text(
+                                'No Face Detected !',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Center(
+                                child: TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Home()));
+                                  },
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.blue[100])),
+                                  child: Text(
+                                    'Home',
+                                    style: TextStyle(
+                                      color: Colors.indigo,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ));
                   } else {
                     return Transform.scale(
                       scale: 1.0,
@@ -265,7 +347,7 @@ class _FaceDetectState extends State<FaceDetect> {
               FutureController,
               onPressed: whenClicked,
               isLogin: false,
-              reload: () {},
+              reload: reloadCamera,
             )
           : Container(),
     );

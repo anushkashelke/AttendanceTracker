@@ -1,6 +1,8 @@
+import 'package:attendance/Firebase/StorageMethods.dart';
 import 'package:attendance/Students%20Records/AttendanceRecords.dart';
 import 'package:attendance/Students%20Records/StudentRecords.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class Records extends StatefulWidget {
   final String ClassName;
@@ -39,7 +41,7 @@ class _RecordsState extends State<Records> {
                     );
                   },
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10,20,10,10),
+                    padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
                     child: Container(
                       width: 350,
                       child: Card(
@@ -104,9 +106,14 @@ class _RecordsState extends State<Records> {
                     ),
                   ),
                 ),
-              ],
+                ],
             ),
           ),
+        LottieBuilder.network('https://assets9.lottiefiles.com/private_files/lf30_ysjb4sex.json',
+          height:300,
+          animate: true,
+          reverse:true,
+          repeat:true,)
         ],
       ),
     );

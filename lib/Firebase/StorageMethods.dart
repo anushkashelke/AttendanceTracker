@@ -60,6 +60,9 @@ class Storagetypes {
         });
         res = 'success';
       }
+      else{
+         res = 'Please fill all the Fields !';
+      }
     } catch (err) {
       res = err.toString();
       print(err);
@@ -146,31 +149,28 @@ class Storagetypes {
   }
 
   Future<String> MarkasPresent(
-      { required String MonthName,
+      {required String MonthName,
       required String Date,
       required String Uid}) async {
     String res = 'Some Error Occured';
     try {
       print("Entered");
       //if (MonthName!='' && Date!='') {
-        /*modelDate.AddDate Date = modelDate.AddDate(
+      /*modelDate.AddDate Date = modelDate.AddDate(
           MonthName: MonthName,
         ); */
-        /*DatabaseReference ref = FirebaseDatabase.instance.ref("Teachers/"+FirebaseAuth.instance.currentUser!.uid);
+      /*DatabaseReference ref = FirebaseDatabase.instance.ref("Teachers/"+FirebaseAuth.instance.currentUser!.uid);
         await ref.update({
           "ClassName": {"Class1":ClassName
         }}); */
-        print(MonthName);
-        FirebaseFirestore.instance.collection('Students').doc(Uid).update({
-          MonthName: FieldValue.arrayUnion([Date])
-        });
-      FirebaseFirestore.instance
-          .collection('Students')
-          .doc(Uid)
-          .update({
+      print(MonthName);
+      FirebaseFirestore.instance.collection('Students').doc(Uid).update({
+        MonthName: FieldValue.arrayUnion([Date])
+      });
+      FirebaseFirestore.instance.collection('Students').doc(Uid).update({
         'Months': FieldValue.arrayUnion([MonthName])
       });
-        /*FirebaseFirestore.instance
+      /*FirebaseFirestore.instance
             .collection('Students')
             .doc(FirebaseAuth.instance.currentUser!.uid)
             .update({
@@ -181,6 +181,28 @@ class Storagetypes {
       res = err.toString();
       //print("Error");
       print(res);
+    }
+    return res;
+  }
+
+  Future<String> DeleteClass({
+    required String ClassName,
+  }) async {
+    String res = "Some Error Occured";
+    try {
+      FirebaseFirestore.instance
+          .collection('Teachers')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({
+        "ClassName": FieldValue.arrayRemove([ClassName])
+      });
+      var Students = FirebaseFirestore.instance
+          .collection('Students')
+          .where('Uid',
+              isGreaterThanOrEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get();
+    } catch (err) {
+      res = err.toString();
     }
     return res;
   }

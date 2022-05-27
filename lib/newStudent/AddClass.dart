@@ -26,23 +26,6 @@ class _AddClassState extends State<AddClass> {
     getData();
   }
 
-  List<String> pointList = <String>[];
-
-  /* getClasses() async{
-    await FirebaseFirestore.instance.collection('Teachers').doc(FirebaseAuth.instance.currentUser!.uid).get().then((value){
-      setState(() {
-        // first add the data to the Offset object
-        List<String> names = List.from(document['names']);
-        List.from(value.data['ClassName']).forEach((element){
-          Offset data = new Offset(element);
-
-          //then add the data to the List<Offset>, now we have a type Offset
-          pointList.add(data);
-        });
-
-      });
-    });
-  } */
   getData() async {
     var TeacherData = await FirebaseFirestore.instance
         .collection('Teachers')
@@ -79,7 +62,7 @@ class _AddClassState extends State<AddClass> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue[800],
+        backgroundColor: Colors.blue[900],
         title: Text(
           'New Student',
         ),

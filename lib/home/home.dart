@@ -3,6 +3,7 @@ import 'package:attendance/MarkAttendance/markAttendance.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import '../Services/DataBase.dart';
 import '../Services/MLKitService.dart';
 import '../Services/faceNetService.dart';
@@ -76,7 +77,7 @@ class _HomeState extends State<Home> {
       loading = value;
     });
   }
-  Future<void> _selectDate(BuildContext context) async {
+  /*Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
@@ -90,7 +91,7 @@ class _HomeState extends State<Home> {
         selectDate(Date, Month);
       });
     }
-  }
+  } */
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -219,14 +220,14 @@ class _HomeState extends State<Home> {
               ],
             ),
           ),
-          Padding(
+          /*Padding(
             padding: const EdgeInsets.all(10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 InkWell(
                   onTap: () {
-                    _selectDate(context);
+                    //_selectDate(context);
                   },
                   child: Container(
                     width: 350,
@@ -251,9 +252,23 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
+          ), */
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('Date: ' +
+                '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),),
           ),
-          Text('Current Date: ' +
-              '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}'),
+          LottieBuilder.network(
+            'https://assets10.lottiefiles.com/packages/lf20_p9cnyffr.json',
+            height: 300.0,
+            repeat: true,
+            reverse: true,
+            animate: true,
+          )
         ],
       ),
     );

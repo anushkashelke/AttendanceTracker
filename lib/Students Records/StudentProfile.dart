@@ -29,116 +29,99 @@ class _StudentProfileState extends State<StudentProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.cyan,
         title: Text(
-          'Student Profile',
+          'Profile ',
         ),
       ),
-      body: Column(
-        children: [
-          Row(
-            //mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
-                child: CircleAvatar(
-                  radius: 50.0,
-                  backgroundColor: Colors.pink,
-                  backgroundImage: AssetImage('images/anushkaId.jpeg'),
-                ),
-              ),
-              SizedBox(
-                width: 70,
-              ),
-              Text(widget.Name,
+      body: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20,20,10,10),
+              child: Text(
+                  'Name: '+widget.Name,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
+                    color: Colors.indigo,
+                    fontSize: 20,
                   )),
-            ],
-          ),
-          Card(
-            color: Colors.white,
-            margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(10, 25, 0, 25),
-              child: ListTile(
-                title: Text(
-                  //textAlign: TextAlign.center,
-                  'Class Name : ' + widget.Class,
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    fontFamily: 'Lato',
-                    letterSpacing: 2.0,
-                    color: Colors.teal[300],
-                    fontWeight: FontWeight.bold,
-                  ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 10,10),
+              child: Text(
+                //textAlign: TextAlign.center,
+                'Class Name : ' + widget.Class,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: 'Lato',
+                  color: Colors.indigo,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-          ),
-          Card(
-            color: Colors.white,
-            margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(10, 25, 0, 25),
-              child: ListTile(
-                title: Text(
-                  'Roll no: ' + widget.RollNo,
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    fontFamily: 'Lato',
-                    letterSpacing: 2.0,
-                    color: Colors.teal[300],
-                    fontWeight: FontWeight.bold,
-                  ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20,20,10,10),
+              child: Text(
+                'Roll no: ' + widget.RollNo,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: 'Lato',
+                  color: Colors.indigo,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-          ),
-          Card(
-            color: Colors.white,
-            margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(10, 25, 0, 25),
-              child: ListTile(
-                title: Text(
-                  'Uiniversity Id: ' + widget.UniId,
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    fontFamily: 'Lato',
-                    letterSpacing: 2.0,
-                    color: Colors.teal[300],
-                    fontWeight: FontWeight.bold,
-                  ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20,20,10,10),
+              child: Text(
+                'University Id: ' + widget.UniId,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: 'Lato',
+                  color: Colors.indigo,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-          ),
-          InkWell(
-            onTap: (){
-              Navigator.push(context,MaterialPageRoute(builder: (context)=> StudentAttendance(Name:widget.Name, Uid: widget.Uid,)),);
-            },
-            child:Card(
-              color: Colors.white,
-              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => StudentAttendance(
+                            Name: widget.Name,
+                            Uid: widget.Uid,
+                          )),
+                );
+              },
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 25, 0, 25),
-                child: ListTile(
-                  title: Text(
-                    'Attendance Records',
-                    style: TextStyle(
-                      fontSize: 15.0,
-                      fontFamily: 'Lato',
-                      letterSpacing: 2.0,
-                      color: Colors.teal[300],
-                      fontWeight: FontWeight.bold,
+                padding: const EdgeInsets.all(20),
+                child: Card(
+                  color: Colors.purple[100],
+                  margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 25, 0, 25),
+                    child: ListTile(
+                      title: Text(
+                        textAlign: TextAlign.center,
+                        'Attendance Records',
+                        style: TextStyle(
+                          fontSize: 15.0,
+                          fontFamily: 'Lato',
+                          letterSpacing: 2.0,
+                          color: Colors.indigo,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-
-        ],
+          ],
+        ),
       ),
     );
   }

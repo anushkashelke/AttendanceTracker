@@ -20,6 +20,7 @@ class _ClassRoomState extends State<ClassRoom> {
         backgroundColor: Colors.blue[800],
         title: Text('Classroom'),
       ),
+
       body: Column(
         children: [
           Padding(
@@ -60,7 +61,7 @@ class _ClassRoomState extends State<ClassRoom> {
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                           child: Card(
-                            color: Colors.teal[200],
+                            color: Colors.purple[100],
                             margin: EdgeInsets.symmetric(
                                 vertical: 10.0, horizontal: 20.0),
                             child: Padding(
@@ -74,7 +75,7 @@ class _ClassRoomState extends State<ClassRoom> {
                                     fontSize: 18.0,
                                     fontFamily: 'Lato',
                                     letterSpacing: 2.0,
-                                    color: Colors.purple[900],
+                                    color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),

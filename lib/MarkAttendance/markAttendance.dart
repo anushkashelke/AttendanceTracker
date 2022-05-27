@@ -3,6 +3,7 @@ import 'package:attendance/newStudent/newStudent.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:lottie/lottie.dart';
 import 'dart:io';
 import '../Services/MLKitService.dart';
 import '../Services/cameraService.dart';
@@ -14,7 +15,8 @@ import '../home/home.dart';
 
 class markAttendance extends StatefulWidget {
   final CameraDescription cameraDescription;
-  const markAttendance({Key? key,required this.cameraDescription}) : super(key: key);
+  const markAttendance({Key? key, required this.cameraDescription})
+      : super(key: key);
 
   @override
   State<markAttendance> createState() => _markAttendanceState();
@@ -31,6 +33,7 @@ class _markAttendanceState extends State<markAttendance> {
   bool isImageTaken = false;
   bool isSaved = false;
   bool isCaptureVisible = false;
+  bool noFaceDetected = true;
   late String imagePath;
   late Size imageSize;
   Face? detectedFace;
@@ -56,6 +59,7 @@ class _markAttendanceState extends State<markAttendance> {
     });
     putFrameOnFaces();
   }
+
   int count = 0;
   void putFrameOnFaces() {
     imageSize = _cameraService.getImageSize();
@@ -67,48 +71,41 @@ class _markAttendanceState extends State<markAttendance> {
           _faceNetService.setCurrentPrediction(image, detectedFace!, true);
         }
         if (isFaceDetected) return;
-          try {
-            List<Face> faces = await _mlKitService.detectFacesFromImage(image);
-            print(faces.length);
-            if (faces != null) {
-              if (faces.length > 0) {
-                isFaceDetected = true;
-                setState((){
-                  detectedFace = faces[0];
-                  //_faceNetService.setCurrentPrediction(image, detectedFace!,true);
-                  //whenClicked();
-                  return;
-                });
-
-              }else {
-                //for initial condition where no face was detected
-                setState(() {
-                  Face? detectedFace;
-                });
-                isFaceDetected = false;
-                _begin();
-              }
+        try {
+          List<Face> faces = await _mlKitService.detectFacesFromImage(image);
+          print(faces.length);
+          if (faces != null) {
+            if (faces.length > 0) {
+              isFaceDetected = true;
+              setState(() {
+                detectedFace = faces[0];
+                //_faceNetService.setCurrentPrediction(image, detectedFace!,true);
+                //whenClicked();
+                return;
+              });
+            } else {
+              //for initial condition where no face was detected
+              setState(() {
+                Face? detectedFace;
+              });
+              isFaceDetected = false;
+              _begin();
             }
-          } catch (e) {
-            isFaceDetected = false;
           }
+        } catch (e) {
+          isFaceDetected = false;
+        }
       }
     });
   }
 
   Future<bool> whenClicked() async {
     if (isFaceDetected == false) {
-      //await _cameraService.cameraController
-         // .stopImageStream();
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              content: Text(
-                'No Face Detected !',
-              ),
-            );
-          });
+      await _cameraService.cameraController.stopImageStream();
+      setState(() {
+        noFaceDetected = true;
+        isCaptureVisible = true;
+      });
       return false;
     } else {
       print("When Clicked");
@@ -159,54 +156,96 @@ class _markAttendanceState extends State<markAttendance> {
               future: FutureController,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
-                  if (isImageTaken){
+                  if (isImageTaken) {
                     //if image is clicked display the image
                     //Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>ShowImage(image: imgXfile)),);
                     return Scaffold(
                       appBar: AppBar(
-                        title: Text('New Student'),
+                        title: Text('Mark Attendance'),
+                        backgroundColor: Colors.blue[900],
                       ),
                       body: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          /*Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Container(
-                              width: width,
-                              height: 500,
-                              child: Transform(
-                                alignment: Alignment.center,
-                                transform: Matrix4.rotationY(mirror),
-                                child: FittedBox(
-                                  fit: BoxFit.cover,
-                                  //image:FileImage(File(imagePath))
-                                ),
-                              ),
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: FileImage(File(imgXfile!.path)),
-                                ),
-                              ),
+                          Center(
+                            child: LottieBuilder.network(
+                              'https://assets6.lottiefiles.com/packages/lf20_cznnfmoz.json',
+                              height: 300.0,
+                              repeat: true,
+                              reverse: true,
+                              animate: true,
                             ),
-                          ), */
+                          ),
                           Padding(
                             padding: const EdgeInsets.all(20),
                             child: Container(
-                              color: Colors.teal,
+                              //color: Colors.teal,
                               child: Padding(
                                 padding: const EdgeInsets.all(10),
                                 child: Text(
-                                  'Marked you as Present! '+ FaceNetService().predName+'',
-                                ),
+                                    'Marked you as Present! ' +
+                                        FaceNetService().predName +
+                                        '',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    )),
                               ),
-                         ),
+                            ),
                           ),
-                          /*TextButton(onPressed: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (context)=> newEntry(image:imgXfile),),);
-                          }, child: Text('Proceed'),),
-                          TextButton(onPressed: onDiscardOfCapturedImage, child: Text('Click Another Image'),), */
                         ],
                       ),
                     );
+                  } else if (noFaceDetected) {
+                    return Scaffold(
+                        backgroundColor: Colors.pink[100],
+                        body: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            LottieBuilder.network(
+                              'https://assets8.lottiefiles.com/private_files/lf30_04qvoilv.json',
+                              height: 300,
+                              animate: true,
+                              repeat: true,
+                              reverse: true,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Text(
+                                'No Face Detected !',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Center(
+                                child: TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Home()));
+                                  },
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.blue[100])),
+                                  child: Text(
+                                    'Home',
+                                    style: TextStyle(
+                                      color: Colors.indigo,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ));
                   } else {
                     return Transform.scale(
                       scale: 1.0,
@@ -226,16 +265,14 @@ class _markAttendanceState extends State<markAttendance> {
                                 children: <Widget>[
                                   CameraPreview(
                                       _cameraService.cameraController),
-                                  detectedFace!=null?
-                                  CustomPaint(
-                                    painter: FacePainter(
-                                      face: detectedFace!,
-                                      imageSize: imageSize,
-                                    ),
-                                  )
-                                      :
-                                  Container(
-                                  ),
+                                  detectedFace != null
+                                      ? CustomPaint(
+                                          painter: FacePainter(
+                                            face: detectedFace!,
+                                            imageSize: imageSize,
+                                          ),
+                                        )
+                                      : Container(),
                                 ],
                               ),
                             ),
@@ -243,7 +280,6 @@ class _markAttendanceState extends State<markAttendance> {
                         ),
                       ),
                     );
-
                   }
                 } else {
                   return Center(
@@ -256,11 +292,11 @@ class _markAttendanceState extends State<markAttendance> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: !isCaptureVisible
           ? AuthActionButton(
-        FutureController,
-        onPressed: whenClicked,
-        isLogin: true,
-        reload: reloadCamera,
-      )
+              FutureController,
+              onPressed: whenClicked,
+              isLogin: true,
+              reload: reloadCamera,
+            )
           : Container(),
     );
   }
