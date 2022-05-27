@@ -1,3 +1,4 @@
+import 'package:attendance/Students%20Records/DayAttendance.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -5,7 +6,9 @@ import 'package:flutter/material.dart';
 
 class Month extends StatefulWidget {
   final String MonthName;
-  const Month({Key? key, required this.MonthName}) : super(key: key);
+  final String ClassName;
+  const Month({Key? key, required this.MonthName, required this.ClassName})
+      : super(key: key);
 
   @override
   State<Month> createState() => _MonthState();
@@ -61,6 +64,18 @@ class _MonthState extends State<Month> {
                     .length, */ //to obtain total number of relevant ids
                 itemBuilder: (context, index) {
                   return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Day(
+                              date: (snapshot.data!
+                                  as dynamic)[widget.MonthName][index],
+                              Class: widget.ClassName,
+                              Month: widget.MonthName),
+                        ),
+                      );
+                    },
                     child: Container(
                       width: 350,
                       child: Card(
@@ -70,7 +85,8 @@ class _MonthState extends State<Month> {
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
                           child: Text(
-                            (snapshot.data! as dynamic)[widget.MonthName][index],
+                            (snapshot.data! as dynamic)[widget.MonthName]
+                                [index],
                             style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,

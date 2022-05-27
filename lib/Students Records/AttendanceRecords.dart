@@ -44,7 +44,7 @@ class _AttendanceRecordsState extends State<AttendanceRecords> {
                         MaterialPageRoute(
                           builder: (context) => Month(
                               MonthName: (snapshot.data! as dynamic)['Months']
-                                  [index]),
+                                  [index], ClassName: widget.ClassName,),
                         ),
                       );
                     },
