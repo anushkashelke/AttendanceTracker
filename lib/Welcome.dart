@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import 'SignupSignin/SignIn.dart';
 import 'SignupSignin/SignUp.dart';
@@ -22,49 +23,61 @@ class _WelcomeState extends State<Welcome> {
         ),
         body: SafeArea(
           child: Column(children: <Widget>[
-            Text(
-              'Attendance',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 30.0,
-                fontFamily: 'Tangerine',
-                color: Colors.blue[900],
-                fontWeight: FontWeight.bold,
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                'Attendance Tracker',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 30.0,
+                  fontFamily: 'Tangerine',
+                  color: Colors.blue[900],
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             SizedBox(
               height: 10.0,
             ),
-            Text('All your attendance records at one place !',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontFamily: 'Tangerine',
-                  color: Colors.black,
-                )),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Card(
+                color: Colors.pink[100],
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text('All your attendance records at one place !',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'Tangerine',
+                        color: Colors.purple[900],
+                      )),
+                ),
+              ),
+            ),
             SizedBox(
               height: 10.0,
             ),
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Container(
                   height: 43,
                   width: 130,
                   decoration: BoxDecoration(
-                    color: Colors.deepPurple,
+                    color: Colors.purple[100],
                   ),
                   child: TextButton(
                     onPressed: () {
                       //to jump on pages
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => const SignIN()),
                       );
                     },
                     child: Text(
                       'Sign In',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      style: TextStyle(color: Colors.indigo, fontSize: 18,fontWeight: FontWeight.bold),
                     ),
                     style: ButtonStyle(
                       padding: MaterialStateProperty.all(
@@ -76,32 +89,45 @@ class _WelcomeState extends State<Welcome> {
                 SizedBox(
                   width: 10.0,
                 ),
-                Container(
-                  height: 43,
-                  width: 130,
-                  decoration: BoxDecoration(
-                    color: Colors.deepPurple,
-                  ),
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const SignUp()),
-                      );
-                    },
-                    child: Text(
-                      'Sign Up',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Container(
+                    height: 43,
+                    width: 130,
+                    decoration: BoxDecoration(
+                      color: Colors.purple[100],
                     ),
-                    style: ButtonStyle(
-                      padding: MaterialStateProperty.all(
-                          const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 20)),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const SignUp()),
+                        );
+                      },
+                      child: Text(
+                        'Sign Up',
+                        style: TextStyle(color: Colors.indigo, fontSize: 18,fontWeight: FontWeight.bold),
+                      ),
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all(
+                            const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 20)),
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: LottieBuilder.network(
+                'https://assets5.lottiefiles.com/packages/lf20_xyadoh9h.json',
+                height: 250,
+                animate:true,
+                repeat:true,
+                reverse:true,
+              ),
+            )
           ]),
         ),
       ),

@@ -115,7 +115,7 @@ class _AddClassState extends State<AddClass> {
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => FaceDetect(

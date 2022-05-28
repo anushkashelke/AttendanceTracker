@@ -47,10 +47,14 @@ class Storagetypes {
           StudentImageUrl: imageUrl,
           Imagedata: imageData,
           Uid: ClassTeacher,
+          Months: '',
         );
         _firestore.collection('Students').doc(ClassTeacher).set(
               user.toJson(),
             ); //to store data of new student in firestore collection if it doesn't exist
+        /*FirebaseFirestore.instance.collection('Students').doc(ClassTeacher).update({
+          'Months': FieldValue.arrayUnion([''])
+        }); */
 
         FirebaseFirestore.instance
             .collection('Teachers')

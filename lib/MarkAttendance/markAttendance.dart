@@ -159,44 +159,97 @@ class _markAttendanceState extends State<markAttendance> {
                   if (isImageTaken) {
                     //if image is clicked display the image
                     //Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>ShowImage(image: imgXfile)),);
-                    return Scaffold(
-                      appBar: AppBar(
-                        title: Text('Mark Attendance'),
-                        backgroundColor: Colors.blue[900],
-                      ),
-                      body: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Center(
-                            child: LottieBuilder.network(
-                              'https://assets6.lottiefiles.com/packages/lf20_cznnfmoz.json',
-                              height: 300.0,
-                              repeat: true,
-                              reverse: true,
-                              animate: true,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Container(
-                              //color: Colors.teal,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: Text(
-                                    'Marked you as Present! ' +
-                                        FaceNetService().predName +
-                                        '',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    )),
+                    if(FaceNetService().predName!='') {
+                      return Scaffold(
+                        appBar: AppBar(
+                          title: Text('Mark Attendance'),
+                          backgroundColor: Colors.blue[900],
+                        ),
+                        body: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: LottieBuilder.network(
+                                'https://assets6.lottiefiles.com/packages/lf20_cznnfmoz.json',
+                                height: 300.0,
+                                repeat: true,
+                                reverse: true,
+                                animate: true,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  } else if (noFaceDetected) {
+                            Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Container(
+                                //color: Colors.teal,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Text(
+                                      'Marked you as Present! ' +
+                                          FaceNetService().predName +
+                                          '',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      )),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    else{
+                      return Scaffold(
+                          backgroundColor: Colors.pink[100],
+                          body: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              LottieBuilder.network(
+                                'https://assets8.lottiefiles.com/private_files/lf30_04qvoilv.json',
+                                height: 300,
+                                animate: true,
+                                repeat: true,
+                                reverse: true,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Text(
+                                  'Student Not Detected !',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Center(
+                                  child: TextButton(
+                                    onPressed: () {
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Home()));
+                                    },
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                        MaterialStateProperty.all(
+                                            Colors.blue[100])),
+                                    child: Text(
+                                      'Home',
+                                      style: TextStyle(
+                                        color: Colors.indigo,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ));
+                    }
+                  } else if (isImageTaken && noFaceDetected) {
                     return Scaffold(
                         backgroundColor: Colors.pink[100],
                         body: Column(

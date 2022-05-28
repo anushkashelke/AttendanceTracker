@@ -4,11 +4,13 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import '../Firebase/teachers/AuthenticateUser.dart';
 import '../Services/DataBase.dart';
 import '../Services/MLKitService.dart';
 import '../Services/faceNetService.dart';
 import '../Students Records/ClassRooms.dart';
 import '../Students Records/RecordOfStudents.dart';
+import '../Welcome.dart';
 import '../newStudent/AddClass.dart';
 import '../newStudent/detectStudent.dart';
 
@@ -101,175 +103,197 @@ class _HomeState extends State<Home> {
           'Attendance',
         ),
       ),
-      body: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-                child: InkWell(
-                  onTap: () {
-                    _startUp();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AddClass(
-                            cameraDescription: cameraDescription), //FaceDetect(
-                        //cameraDescription: cameraDescription),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    width: 350,
-                    child: Card(
-                      color: Colors.pink[100],
-                      margin: EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 20.0),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 25, 0, 25),
-                        child: Text(
-                          'Add New Student',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.blue[900],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
+      body: Container(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+                  child: InkWell(
+                    onTap: () {
+                      _startUp();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddClass(
+                              cameraDescription: cameraDescription), //FaceDetect(
+                          //cameraDescription: cameraDescription),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      width: 350,
+                      child: Card(
+                        color: Colors.pink[100],
+                        margin: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 20.0),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 25, 0, 25),
+                          child: Text(
+                            'Add New Student',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.blue[900],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
                           ),
                         ),
                       ),
                     ),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      _startUp();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => markAttendance(
+                                cameraDescription: cameraDescription)),
+                      );
+                    },
+                    child: Container(
+                      width: 350,
+                      child: Card(
+                        color: Colors.pink[100],
+                        margin: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 20.0),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 25, 0, 25),
+                          child: Text(
+                            'Take Attendance',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.blue[900],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      _startUp();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ClassRoom()),
+                      );
+                    },
+                    child: Container(
+                      width: 350,
+                      child: Card(
+                        color: Colors.pink[100],
+                        margin: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 20.0),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 25, 0, 25),
+                          child: Text(
+                            'Your Classrooms',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.blue[900],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            /*Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      //_selectDate(context);
+                    },
+                    child: Container(
+                      width: 350,
+                      child: Card(
+                        color: Colors.pink[100],
+                        margin: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 20.0),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 25, 0, 25),
+                          child: Text(
+                            'Set Date to mark attendance',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.blue[900],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ), */
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('Date: ' +
+                  '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),),
+            ),
+            LottieBuilder.network(
+              'https://assets10.lottiefiles.com/packages/lf20_p9cnyffr.json',
+              height: 200.0,
+              repeat: true,
+              reverse: true,
+              animate: true,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10,0, 10, 20),
+              child: TextButton(
+                onPressed: () {
+                  Authentication().SignOut;
+                  Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> Welcome()));
+                },
+                style: ButtonStyle(
+                    backgroundColor:
+                    MaterialStateProperty.all(Colors.blue[100])),
+                child: Text(
+                  'Sign Out',
+                  style: TextStyle(
+                    color: Colors.indigo,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
                   ),
                 ),
               ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () {
-                    _startUp();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => markAttendance(
-                              cameraDescription: cameraDescription)),
-                    );
-                  },
-                  child: Container(
-                    width: 350,
-                    child: Card(
-                      color: Colors.pink[100],
-                      margin: EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 20.0),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 25, 0, 25),
-                        child: Text(
-                          'Take Attendance',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.blue[900],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () {
-                    _startUp();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ClassRoom()),
-                    );
-                  },
-                  child: Container(
-                    width: 350,
-                    child: Card(
-                      color: Colors.pink[100],
-                      margin: EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 20.0),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 25, 0, 25),
-                        child: Text(
-                          'Your Classrooms',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.blue[900],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          /*Padding(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () {
-                    //_selectDate(context);
-                  },
-                  child: Container(
-                    width: 350,
-                    child: Card(
-                      color: Colors.pink[100],
-                      margin: EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 20.0),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 25, 0, 25),
-                        child: Text(
-                          'Set Date to mark attendance',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.blue[900],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ), */
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text('Date: ' +
-                '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),),
-          ),
-          LottieBuilder.network(
-            'https://assets10.lottiefiles.com/packages/lf20_p9cnyffr.json',
-            height: 300.0,
-            repeat: true,
-            reverse: true,
-            animate: true,
-          )
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -9,6 +9,7 @@ class User_details {
   final String StudentImageUrl;
   final List Imagedata;
   final String Uid;
+  final String Months;
   const User_details({
     //constructor
     required this.StudentId,
@@ -18,6 +19,7 @@ class User_details {
     required this.StudentImageUrl,
     required this.Imagedata,
     required this.Uid,
+    required this.Months,
   });
   Map<String, dynamic> toJson() => {
         //String:dynamic value(since multiple users)
@@ -29,6 +31,7 @@ class User_details {
         "StudentImageUrl": StudentImageUrl,
         "ImageData": Imagedata,
         "Uid": Uid,
+        "Months":Months,
       }; //functions for user to access firebase  //toJson method to convert user details into an object
   static User_details fromSnap(DocumentSnapshot snap) {
     //DocumentSnapshot= contains data read from the firebase storage
@@ -43,6 +46,7 @@ class User_details {
       StudentImageUrl: snapshot['StudentImageUrl'],
       Imagedata: snapshot['ImageData'],
       Uid: snapshot['Uid'],
+      Months: snapshot['Months'],
     );
   }
 }

@@ -73,74 +73,81 @@ class _newEntryState extends State<newEntry> {
   final TextEditingController _StudentClass = TextEditingController();
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.blue[900],
+          title: Text(
+            'New Student',
+          ),
+        ),
         body: Column(
-      //crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-          child: TextField(
-            controller: _StudentName,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              //labelText: 'NAME',
-              hintText: 'Enter Name',
-              hintStyle: TextStyle(
-                color: Colors.teal,
+          //crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: TextField(
+                controller: _StudentName,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  //labelText: 'NAME',
+                  hintText: 'Enter Name',
+                  hintStyle: TextStyle(
+                    color: Colors.teal,
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-          child: TextField(
-            controller: _StudentRollNo,
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly
-            ],
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              //labelText: 'WEIGHT',
-              hintText: 'Enter Class Roll Number',
-              hintStyle: TextStyle(
-                color: Colors.teal,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: TextField(
+                controller: _StudentRollNo,
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  //labelText: 'WEIGHT',
+                  hintText: 'Enter Class Roll Number',
+                  hintStyle: TextStyle(
+                    color: Colors.teal,
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-          child: TextField(
-            controller: _UniversityId,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              //labelText: 'NAME',
-              hintText: 'Enter University Roll Number',
-              hintStyle: TextStyle(
-                color: Colors.teal,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              child: TextField(
+                controller: _UniversityId,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  //labelText: 'NAME',
+                  hintText: 'Enter University Roll Number',
+                  hintStyle: TextStyle(
+                    color: Colors.teal,
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        TextButton(
-          onPressed: () {
-            AddToFirebase(_StudentRollNo.text, _StudentName.text,
-                _UniversityId.text, widget.image);
-            Home();
-          },
-          child: Text(
-            'Add',
-            style: TextStyle(
-              color: Colors.indigo,
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
+            TextButton(
+              onPressed: () {
+                AddToFirebase(_StudentRollNo.text, _StudentName.text,
+                    _UniversityId.text, widget.image);
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => Home()));
+              },
+              child: Text(
+                'Add',
+                style: TextStyle(
+                  color: Colors.indigo,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.blue[100])),
             ),
-          ),
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.blue[100])),
-        ),
-      ],
-    ));
+          ],
+        ));
   }
 }

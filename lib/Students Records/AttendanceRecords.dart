@@ -17,6 +17,12 @@ class _AttendanceRecordsState extends State<AttendanceRecords> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blue[900],
+        title: Text(
+          'Months',
+        ),
+      ),
       body: Container(
         child: FutureBuilder(
             future: FirebaseFirestore.instance

@@ -19,6 +19,7 @@ class _DayState extends State<Day> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.blue[900],
           title: Text(
             widget.date,
           ),
@@ -26,16 +27,22 @@ class _DayState extends State<Day> {
         body: Column(
           children: [
             SizedBox(
-              height: 70,
+              height: 30,
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(10,5,10,20),
-              child: Text(
-                'Students Present from Class ' + widget.Class,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+              padding: const EdgeInsets.fromLTRB(10, 5, 10, 20),
+              child: Card(
+                color: Colors.teal[100],
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(5,15,5,15),
+                  child: Text(
+                    'Students Present from Class ' + widget.Class,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -50,25 +57,24 @@ class _DayState extends State<Day> {
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   //print("Seeeee");
-                  return Container(
-                  );
+                  return Container();
                 } else {
                   return Expanded(
                     child: ListView.builder(
                         itemCount: (snapshot.data! as dynamic).docs.length,
                         itemBuilder: (context, index) {
                           return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            //mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
                                 padding:
-                                    const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                    const EdgeInsets.fromLTRB(20, 5, 10, 5),
                                 child: Text(
                                   (snapshot.data! as dynamic).docs[index]
                                       ['Rollno'],
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontWeight: FontWeight.bold,
                                     fontSize: 18,
                                   ),
                                 ),
@@ -81,7 +87,6 @@ class _DayState extends State<Day> {
                                       ['Name'],
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontWeight: FontWeight.bold,
                                     fontSize: 18,
                                   ),
                                 ),
