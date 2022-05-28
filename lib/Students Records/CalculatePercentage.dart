@@ -84,7 +84,6 @@ class _CalcPercentageState extends State<CalcPercentage> {
                   .get(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  //print("Seeeee");
                   return const Center(
                     child: const CircularProgressIndicator(
                       backgroundColor: Colors.blue,

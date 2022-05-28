@@ -53,10 +53,10 @@ class _DayState extends State<Day> {
                       isGreaterThanOrEqualTo:
                           FirebaseAuth.instance.currentUser!.uid)
                   .where(widget.Month, arrayContains: widget.date)
+                  .where('Class',isEqualTo:widget.Class)
                   .get(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  //print("Seeeee");
                   return Container();
                 } else {
                   return Expanded(

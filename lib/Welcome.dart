@@ -70,7 +70,7 @@ class _WelcomeState extends State<Welcome> {
                   child: TextButton(
                     onPressed: () {
                       //to jump on pages
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => const SignIN()),
                       );
@@ -99,7 +99,7 @@ class _WelcomeState extends State<Welcome> {
                     ),
                     child: TextButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => const SignUp()),
                         );

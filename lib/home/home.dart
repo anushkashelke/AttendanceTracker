@@ -5,14 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import '../Firebase/teachers/AuthenticateUser.dart';
-import '../Services/DataBase.dart';
 import '../Services/MLKitService.dart';
 import '../Services/faceNetService.dart';
 import '../Students Records/ClassRooms.dart';
-import '../Students Records/RecordOfStudents.dart';
 import '../Welcome.dart';
 import '../newStudent/AddClass.dart';
-import '../newStudent/detectStudent.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -28,17 +25,15 @@ class _HomeState extends State<Home> {
   @override
   FaceNetService _faceNetService = FaceNetService();
   MLKitService _mlKitService = MLKitService();
-  DataBaseService _dataBaseService = DataBaseService();
-
-  late CameraDescription cameraDescription;
   bool loading = false;
   DateTime selectedDate = DateTime.now();
   String Date = '';
   String Month = '';
-
+  late CameraDescription _cameraDescription;
   @override
   void initState() {
     super.initState();
+
     selectDate('${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
         DateFormat.LLLL().format(selectedDate));
     //_startUp();
@@ -61,14 +56,13 @@ class _HomeState extends State<Home> {
     List<CameraDescription> cameras = await availableCameras();
 
     /// takes the front camera
-    cameraDescription = cameras.firstWhere(
+    _cameraDescription = cameras.firstWhere(
       (CameraDescription camera) =>
           camera.lensDirection == CameraLensDirection.front,
     );
 
     // start the services
     await _faceNetService.loadModel();
-    await _dataBaseService.loadDB();
     _mlKitService.initialize();
     _setLoading(false);
   }
@@ -118,7 +112,7 @@ class _HomeState extends State<Home> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => AddClass(
-                              cameraDescription: cameraDescription), //FaceDetect(
+                              cameraDescription: _cameraDescription), //FaceDetect(
                           //cameraDescription: cameraDescription),
                         ),
                       );
@@ -159,7 +153,7 @@ class _HomeState extends State<Home> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => markAttendance(
-                                cameraDescription: cameraDescription)),
+                                cameraDescription: _cameraDescription)),
                       );
                     },
                     child: Container(

@@ -32,7 +32,6 @@ class _newEntryState extends State<newEntry> {
       _isLoading = false;
     });
     try {
-      print("Entered");
       File file = File(StudentImage.path);
       String result = await Storagetypes().newStudent(
           className: widget.ClassName,
@@ -45,7 +44,6 @@ class _newEntryState extends State<newEntry> {
           _isLoading = false;
         });
       } else {
-        print("Entered");
         return showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -61,9 +59,7 @@ class _newEntryState extends State<newEntry> {
         //showSnackBar(context,result);
       }
     } catch (e) {
-      print("Error");
       print(e.toString());
-      print("Error");
     }
   }
 

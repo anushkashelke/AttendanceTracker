@@ -31,7 +31,6 @@ class _AttendanceRecordsState extends State<AttendanceRecords> {
                 .get(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                //print("Seeeee");
                 return const Center(
                   child: const CircularProgressIndicator(
                     backgroundColor: Colors.blue,

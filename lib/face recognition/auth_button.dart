@@ -1,17 +1,13 @@
-import 'dart:io';
-import 'package:attendance/face%20recognition/userModel.dart';
-import 'package:attendance/newStudent/newStudent.dart';
 import 'package:flutter/material.dart';
-import '../Services/DataBase.dart';
 import '../Services/cameraService.dart';
 import '../Services/faceNetService.dart';
-import 'appButton.dart';
-import 'appTextField.dart';
-
 
 class AuthActionButton extends StatefulWidget {
   AuthActionButton(this._initializeControllerFuture,
-      {Key? key, required this.onPressed, required this.isLogin, required this.reload});
+      {Key? key,
+      required this.onPressed,
+      required this.isLogin,
+      required this.reload});
   final Future _initializeControllerFuture;
   final Function onPressed;
   final bool isLogin;
@@ -23,58 +19,7 @@ class AuthActionButton extends StatefulWidget {
 class _AuthActionButtonState extends State<AuthActionButton> {
   /// service injection
   final FaceNetService _faceNetService = FaceNetService();
-  final DataBaseService _dataBaseService = DataBaseService();
   final CameraService _cameraService = CameraService();
-
-  final TextEditingController _userTextEditingController =
-  TextEditingController(text: '');
-  final TextEditingController _passwordTextEditingController =
-  TextEditingController(text: '');
-
-  late User predictedUser;
-
-  Future _signUp(context) async {
-    /// gets predicted data from facenet service (user face detected)
-    List predictedData = _faceNetService.predictedData;
-    String user = _userTextEditingController.text;
-    String password = _passwordTextEditingController.text;
-
-    /// creates a new user in the 'database'
-    await _dataBaseService.saveData(user, password, predictedData);
-
-    /// resets the face stored in the face net sevice
-    this._faceNetService.setPredictedData(null);
-    //Navigator.push(context,
-      //  MaterialPageRoute(builder: (BuildContext context) => newEntry()));
-  }
-
-  Future _signIn(context) async {
-    String password = _passwordTextEditingController.text;
-
-    /*if (this.predictedUser.password == password) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => Profile(
-                this.predictedUser.user,
-                imagePath: _cameraService.imagePath,
-              )));
-    } else {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Text('Wrong password!'),
-          );
-        },
-      );
-    } */
-  }
-
-  //String? _predictUser() {
-    //Future<String> userAndPass = _faceNetService.predict();
-    //return userAndPass ?? null;
-  //}
 
   @override
   Widget build(BuildContext context) {
@@ -89,15 +34,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
           if (faceDetected) {
             if (widget.isLogin) {
               var userAndPass = FaceNetService().predict();
-              //if (userAndPass != null) {
-                //this.predictedUser = User.fromDB(userAndPass);
-              //}
             }
-            //PersistentBottomSheetController bottomSheetController =
-            //Scaffold.of(context)
-              //  .showBottomSheet((context) => signSheet(context));
-
-            //bottomSheetController.closed.whenComplete(() => widget.reload());
           }
         } catch (e) {
           // If an error occurs, log the error to the console.
@@ -133,79 +70,6 @@ class _AuthActionButtonState extends State<AuthActionButton> {
             Icon(Icons.camera_alt, color: Colors.white)
           ],
         ),
-      ),
-    );
-  }
-
-  signSheet(context) {
-    return Container(
-      padding: EdgeInsets.all(20),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          widget.isLogin && predictedUser != null
-              ? Container(
-            child: Text(
-              'Hey There',
-              //'Welcome back, ' + predictedUser.user + '.',
-              style: TextStyle(fontSize: 20),
-            ),
-          )
-              : widget.isLogin
-              ? Container(
-              child: Text(
-                'User not found 😞',
-                style: TextStyle(fontSize: 20),
-              ))
-              : Container(),
-          Container(
-            child: Column(
-              children: [
-                !widget.isLogin
-                    ? AppTextField(
-                  controller: _userTextEditingController,
-                  labelText: "Your Name",
-                )
-                    : Container(),
-                SizedBox(height: 10),
-                widget.isLogin && predictedUser == null
-                    ? Container()
-                    : AppTextField(
-                  controller: _passwordTextEditingController,
-                  labelText: "Password",
-                  isPassword: true,
-                ),
-                SizedBox(height: 10),
-                Divider(),
-                SizedBox(height: 10),
-                widget.isLogin && predictedUser != null
-                    ? AppButton(
-                  text: 'LOGIN',
-                  onPressed: () async {
-                    _signIn(context);
-                  },
-                  icon: Icon(
-                    Icons.login,
-                    color: Colors.white,
-                  ),
-                )
-                    : !widget.isLogin
-                    ? AppButton(
-                  text: 'SIGN UP',
-                  onPressed: () async {
-                    await _signUp(context);
-                  },
-                  icon: Icon(
-                    Icons.person_add,
-                    color: Colors.white,
-                  ),
-                )
-                    : Container(),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

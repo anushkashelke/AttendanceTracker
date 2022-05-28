@@ -33,7 +33,6 @@ class _ClassRoomState extends State<ClassRoom> {
                   .get(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  //print("Seeeee");
                   return const Center(
                     child: const CircularProgressIndicator(
                       backgroundColor: Colors.blue,

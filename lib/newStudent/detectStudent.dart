@@ -10,7 +10,6 @@ import '../Services/cameraService.dart';
 import '../Services/faceNetService.dart';
 import 'package:attendance/face recognition/facePainter.dart';
 import '../face recognition/auth_button.dart';
-import '../face recognition/cameraHeader.dart';
 import '../home/home.dart';
 
 class FaceDetect extends StatefulWidget {
@@ -42,7 +41,6 @@ class _FaceDetectState extends State<FaceDetect> {
   bool noFaceDetected = false;
   void initState() {
     super.initState();
-    //detectedFace = null as Face;
     _begin();
   }
 
@@ -67,7 +65,6 @@ class _FaceDetectState extends State<FaceDetect> {
     _cameraService.cameraController.startImageStream((image) async {
       if (_cameraService.cameraController != null) {
         if (isSaved) {
-          //if a image was already clicked but user wants to create another img , so previous shouldn't be considered
           isSaved = false;
           _faceNetService.setCurrentPrediction(image, detectedFace!, false);
         }
@@ -75,22 +72,13 @@ class _FaceDetectState extends State<FaceDetect> {
 
         try {
           List<Face> faces = await _mlKitService.detectFacesFromImage(image);
-          print(faces);
           if (faces != null) {
             if (faces.length > 0) {
               isFaceDetected = true;
-              print('DETECTEDDDDDDDDDDDDDDDDDDDDDDD Facess');
-              print('DETECTEDDDDDDDDDDDDDDDDDDDDDDD');
-              print('DETECTEDDDDDDDDDDDDDDDDDDDDDDD');
               setState(() {
                 detectedFace = faces[0];
-                //_faceNetService.setCurrentPrediction(image, detectedFace!,false);
-                //_cameraService.cameraController.stopImageStream();
-                //dispose();
-                //whenClicked();
               });
 
-              //imgXfile = image;
             } else {
               //for initial condition where no face was detected
               setState(() {
@@ -113,15 +101,6 @@ class _FaceDetectState extends State<FaceDetect> {
         noFaceDetected = true;
         isCaptureVisible = true;
       });
-      /*showDialog(
-          context: context,
-          builder: (context) {
-            return Container(
-              child: Text(
-                'No Face Was Detected',
-              ),
-            );
-          }); */
       return false;
     } else {
       isSaved = true;
@@ -131,7 +110,6 @@ class _FaceDetectState extends State<FaceDetect> {
           .stopImageStream(); //stops the image streaming
       await Future.delayed(Duration(milliseconds: 200));
       imgXfile = await _cameraService.takePicture();
-      //List<Face> faces = await _mlKitService.detectFacesFromImage(imgXfile);
       setState(() {
         isCaptureVisible = true; //when the image is captured
         isImageTaken = true;
@@ -227,7 +205,7 @@ class _FaceDetectState extends State<FaceDetect> {
                             padding: const EdgeInsets.all(10),
                             child: TextButton(
                               onPressed: () {
-                                Navigator.push(
+                                Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => Home()));
@@ -276,7 +254,7 @@ class _FaceDetectState extends State<FaceDetect> {
                               child: Center(
                                 child: TextButton(
                                   onPressed: () {
-                                    Navigator.push(
+                                    Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => Home()));

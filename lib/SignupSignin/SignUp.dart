@@ -32,7 +32,7 @@ class _SignUpState extends State<SignUp> {
           //through push replacement it won't navigate back to sign up page from the home page
           MaterialPageRoute(builder: (context) => const Home()));
     } else {
-      showSnackBar(context, 'some error occured');
+      showSnackBar(context,'Please enter all the fields');
     }
   }
 

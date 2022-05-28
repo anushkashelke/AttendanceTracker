@@ -36,14 +36,13 @@ class _StudentAttendanceState extends State<StudentAttendance> {
                   .get(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  //print("Seeeee");
                   return const Center(
                     child: const CircularProgressIndicator(
                       backgroundColor: Colors.blue,
                     ),
                   );
                 }
-                if((snapshot.data! as dynamic)['Months'].length>1) {
+                if((snapshot.data! as dynamic)['Months'].length>0) {
                   return ListView.builder(
                       shrinkWrap: true,
                       itemCount: (snapshot.data! as dynamic)['Months'].length,

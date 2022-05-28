@@ -1,16 +1,13 @@
 import 'dart:math' as math;
-import 'package:attendance/newStudent/newStudent.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:lottie/lottie.dart';
-import 'dart:io';
 import '../Services/MLKitService.dart';
 import '../Services/cameraService.dart';
 import '../Services/faceNetService.dart';
 import 'package:attendance/face recognition/facePainter.dart';
 import '../face recognition/auth_button.dart';
-import '../face recognition/cameraHeader.dart';
 import '../home/home.dart';
 
 class markAttendance extends StatefulWidget {
@@ -33,7 +30,7 @@ class _markAttendanceState extends State<markAttendance> {
   bool isImageTaken = false;
   bool isSaved = false;
   bool isCaptureVisible = false;
-  bool noFaceDetected = true;
+  bool noFaceDetected = false;
   late String imagePath;
   late Size imageSize;
   Face? detectedFace;
@@ -52,6 +49,7 @@ class _markAttendanceState extends State<markAttendance> {
 
   void _begin() async {
     //initialize the camera at the beginning
+
     FutureController = _cameraService.startService(widget.cameraDescription);
     await FutureController; //controls the camera
     setState(() {
@@ -66,21 +64,17 @@ class _markAttendanceState extends State<markAttendance> {
     _cameraService.cameraController.startImageStream((image) async {
       if (_cameraService.cameraController != null) {
         if (isSaved) {
-          //if a image was already clicked but user wants to create another img , so previous shouldn't be considered
           isSaved = false;
           _faceNetService.setCurrentPrediction(image, detectedFace!, true);
         }
         if (isFaceDetected) return;
         try {
           List<Face> faces = await _mlKitService.detectFacesFromImage(image);
-          print(faces.length);
           if (faces != null) {
             if (faces.length > 0) {
               isFaceDetected = true;
               setState(() {
                 detectedFace = faces[0];
-                //_faceNetService.setCurrentPrediction(image, detectedFace!,true);
-                //whenClicked();
                 return;
               });
             } else {
@@ -108,8 +102,6 @@ class _markAttendanceState extends State<markAttendance> {
       });
       return false;
     } else {
-      print("When Clicked");
-      print("When Clicked");
       isSaved = true;
       await Future.delayed(
           Duration(milliseconds: 500)); //will start executing after 500 ms
@@ -157,9 +149,7 @@ class _markAttendanceState extends State<markAttendance> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (isImageTaken) {
-                    //if image is clicked display the image
-                    //Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>ShowImage(image: imgXfile)),);
-                    if(FaceNetService().predName!='') {
+                    if (FaceNetService().predName !='') {
                       return Scaffold(
                         appBar: AppBar(
                           title: Text('Mark Attendance'),
@@ -197,8 +187,7 @@ class _markAttendanceState extends State<markAttendance> {
                           ],
                         ),
                       );
-                    }
-                    else{
+                    } else {
                       return Scaffold(
                           backgroundColor: Colors.pink[100],
                           body: Column(
@@ -233,8 +222,8 @@ class _markAttendanceState extends State<markAttendance> {
                                     },
                                     style: ButtonStyle(
                                         backgroundColor:
-                                        MaterialStateProperty.all(
-                                            Colors.blue[100])),
+                                            MaterialStateProperty.all(
+                                                Colors.blue[100])),
                                     child: Text(
                                       'Home',
                                       style: TextStyle(
@@ -249,7 +238,7 @@ class _markAttendanceState extends State<markAttendance> {
                             ],
                           ));
                     }
-                  } else if (isImageTaken && noFaceDetected) {
+                  } else if (noFaceDetected) {
                     return Scaffold(
                         backgroundColor: Colors.pink[100],
                         body: Column(
@@ -277,7 +266,7 @@ class _markAttendanceState extends State<markAttendance> {
                               child: Center(
                                 child: TextButton(
                                   onPressed: () {
-                                    Navigator.push(
+                                    Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => Home()));

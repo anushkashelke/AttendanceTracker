@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'dart:typed_data';
-import 'package:attendance/Services/DataBase.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,18 +22,13 @@ class FaceNetService {
   // singleton boilerplate
   FaceNetService._internal();
 
-  DataBaseService _dataBaseService = DataBaseService();
-
   tflite.Interpreter? _interpreter;
-  //dynamic _interpreter = tflite.Interpreter;
   double threshold = 1.0;
 
   List _predictedData = [];
   List get predictedData => this._predictedData;
   String predUid = '';
   String predName = '';
-  //  saved users data
-  dynamic data = {};
 
   Future loadModel() async {
     try {
@@ -67,21 +61,19 @@ class FaceNetService {
     /// crops the face from the image and transforms it to an array of data
     List input = preProcess(cameraImage, face);
     //print(input);
-    /// then reshapes input and ouput to model format 🧑‍🔧
+    /// then reshapes input and ouput to model format
     //var resize = Bitmap.createScaledBitmap(*input image*, 180, 180, true)
     input = input.reshape([1, 112, 112, 3]);
     List output = List.filled(1 * 192, null, growable: false)
         .reshape([1, 192]); //List.generate(1, (index) => List.filled(192, 0));
     print("output");
 
-    /// runs and transforms the data 🤖
+    /// runs and transforms the data
     this._interpreter!.run(input, output);
     print(_interpreter);
     output = output.reshape([192]);
     print(output);
     this._predictedData = List.from(output);
-    //print("PREDICTED DATA IS");
-    //print(this.predictedData);
     if (topredict) {
       predict();
     }
@@ -172,17 +164,9 @@ class FaceNetService {
     return convertedBytes.buffer.asFloat32List();
   }
 
-  /// searchs the result in the DDBB (this function should be performed by Backend)
-  /// [predictedData]: Array that represents the face by the MobileFaceNet model
-
-  List<double> distances = [];
   double minDist = 999;
   Future<String> _searchResult(List predictedData) async {
-    print("Result is ");
-    print("Result is ");
     double currDist = 0.0;
-
-    //String predRes = '';
     var StudentUid = await FirebaseFirestore.instance
         .collection('Students')
         .where(
@@ -190,9 +174,6 @@ class FaceNetService {
           isGreaterThanOrEqualTo: FirebaseAuth.instance.currentUser!.uid,
         )
         .get();
-    print("Checkkk");
-    //print(StudentUid.docs[1].data()!['Uid']);
-    print("Checkkk");
     print(StudentUid.docs.length);
     for (int i = 0; i < StudentUid.docs.length; i++) {
       String id = i.toString();
@@ -200,49 +181,13 @@ class FaceNetService {
           .collection('Students')
           .doc(StudentUid.docs[i].data()!['Uid'])
           .get();
-      print(UserSnap.data()!['Name']);
-      //print(UserSnap.data()!['ImageData'].length);
       currDist =
           _euclideanDistance(UserSnap.data()!['ImageData'], predictedData);
-      //print("Eucledian");
-      print(currDist);
-      /*try {
-  if (distances.length>=i) {
-    double avg = (distances[i] + currDist)/2;
-    distances.removeAt(i);
-    //print(distances);
-    distances.insert(i, avg);
-    print("Inserted");
-    print(distances);
-  }
-  //double avg = (distances[i]+currDist)/2;
-  //distances.insert(i,avg);
-  else {
-    distances.add(currDist);
-    //print("Added");
-    print(distances);
-  }
-}
-catch(err){
-  print("ERROR");
-  print(err);
-} */
-
-      print("CURRENT STUDENT");
-      print(UserSnap.data()!['Name']);
       if (currDist <= minDist) {
         minDist = currDist;
         predUid = UserSnap.data()!['Uid'];
         predName = UserSnap.data()!['Name'];
-        //print(predResult);
       }
-      /*for(int j=0;j<distances.length;i++) {
-        if (distances[j] <= threshold && distances[i] <= minDist) {
-          minDist = distances[i];
-          predResult = UserSnap.data()!['Name'];
-          print(predResult);
-        }
-      } */
     }
     if (predUid != '') {
       print("Add fire");
@@ -253,7 +198,7 @@ catch(err){
   }
 
   /// Adds the power of the difference between each point
-  /// then computes the sqrt of the result 📐
+  /// then computes the sqrt of the result
   double _euclideanDistance(List e1, List e2) {
     if (e1 == null || e2 == null) throw Exception("Null argument");
 

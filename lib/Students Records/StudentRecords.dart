@@ -38,7 +38,6 @@ class _StudentRecordsState extends State<StudentRecords> {
                   .get(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  //print("Seeeee");
                   return const Center(
                     child: const CircularProgressIndicator(
                       backgroundColor: Colors.blue,
@@ -53,7 +52,6 @@ class _StudentRecordsState extends State<StudentRecords> {
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () {
-                        print("Entered");
                         Navigator.push(
                           context,
                           MaterialPageRoute(
