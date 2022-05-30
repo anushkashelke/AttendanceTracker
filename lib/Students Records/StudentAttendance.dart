@@ -1,6 +1,5 @@
 import 'package:attendance/Students%20Records/CalculatePercentage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class StudentAttendance extends StatefulWidget {
@@ -14,7 +13,7 @@ class StudentAttendance extends StatefulWidget {
 }
 
 class _StudentAttendanceState extends State<StudentAttendance> {
-  @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -42,28 +41,23 @@ class _StudentAttendanceState extends State<StudentAttendance> {
                     ),
                   );
                 }
-                if((snapshot.data! as dynamic)['Months'].length>0) {
+                if ((snapshot.data! as dynamic)['Months'].length > 0) {
                   return ListView.builder(
                       shrinkWrap: true,
                       itemCount: (snapshot.data! as dynamic)['Months'].length,
                       itemBuilder: (context, index) {
                         return InkWell(
-                          onTap: () {
+                          onTap: () async {
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    CalcPercentage(
-                                      month: (snapshot
-                                          .data! as dynamic)['Months']
+                                builder: (context) => CalcPercentage(
+                                  month: (snapshot.data! as dynamic)['Months']
                                       [index],
-                                      Uid: widget.Uid,
-                                      TotalDays: (snapshot
-                                          .data! as dynamic)['Months']
-                                      [index]
-                                          .length,
-                                      Name: widget.Name,
-                                    ),
+                                  Uid: widget.Uid,
+                                  Name: widget.Name,
+                                ),
                               ),
                             );
                           },
@@ -77,11 +71,11 @@ class _StudentAttendanceState extends State<StudentAttendance> {
                                     vertical: 10.0, horizontal: 20.0),
                                 child: Padding(
                                   padding:
-                                  const EdgeInsets.fromLTRB(10, 20, 10, 20),
+                                      const EdgeInsets.fromLTRB(10, 20, 10, 20),
                                   child: Text(
                                     //(snapshot.data! as dynamic)[widget.MonthName][index],
-                                    (snapshot
-                                        .data! as dynamic)['Months'][index],
+                                    (snapshot.data! as dynamic)['Months']
+                                        [index],
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       color: Colors.black,
@@ -95,12 +89,11 @@ class _StudentAttendanceState extends State<StudentAttendance> {
                           ),
                         );
                       });
-                }
-                else{
+                } else {
                   return Container(
-                    child:Center(
+                    child: Center(
                       child: Text(
-                      'No Records Present !',
+                        'No Records Present !',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,

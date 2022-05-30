@@ -4,16 +4,21 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 
+import '../Firebase/StorageMethods.dart';
+
 class CalcPercentage extends StatefulWidget {
   final String month;
   final String Uid;
-  final int TotalDays;
+  //final int TotalDays;
   final String Name;
+  /*Future<void> get() async {
+    TotalDays = await Storagetypes().TotalDays(Month: month);
+  } */
   const CalcPercentage(
       {Key? key,
       required this.month,
       required this.Uid,
-      required this.TotalDays,
+      //required this.TotalDays,
       required this.Name})
       : super(key: key);
 
@@ -22,6 +27,14 @@ class CalcPercentage extends StatefulWidget {
 }
 
 class _CalcPercentageState extends State<CalcPercentage> {
+  int Totaldays = 0;
+  void initState() {
+    super.initState();
+    get();
+  }
+  void get() async{
+    Totaldays = await Storagetypes().TotalDaysInMonth(Month:widget.month);
+  }
   PieChart AddPieChart(double present, double absent) {
     return PieChart(
       dataMap: {
@@ -63,20 +76,7 @@ class _CalcPercentageState extends State<CalcPercentage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(
-                'Total Days in ' +
-                    widget.month +
-                    ' : ' +
-                    widget.TotalDays.toString(),
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue[800],
-                ),
-              ),
-            ),
+
             FutureBuilder(
               future: FirebaseFirestore.instance
                   .collection('Students')
@@ -95,12 +95,26 @@ class _CalcPercentageState extends State<CalcPercentage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text(
+                          'Total Days in ' +
+                              widget.month +
+                              ' : ' + Totaldays.toString(),
+                          //Storagetypes().TotalDays.toString(),
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue[800],
+                          ),
+                        ),
+                      ),
+                      Padding(
                         padding: const EdgeInsets.fromLTRB(10, 10, 10, 30),
                         child: Text(
                           'Number of Days Present : ' +
                               (snapshot.data! as dynamic)[widget.month]
                                   .length
-                                  .toString(),
+                                  .toString(),//Storagetypes().TotalDays.toString(),
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -114,12 +128,12 @@ class _CalcPercentageState extends State<CalcPercentage> {
                           child: AddPieChart(
                               (((snapshot.data! as dynamic)[widget.month]
                                           .length /
-                                      widget.TotalDays) *
+                                      Totaldays) *
                                   100),
                               (100.00 -
                                   (((snapshot.data! as dynamic)[widget.month]
                                               .length /
-                                          widget.TotalDays) *
+                                          Totaldays) *
                                       100))),
                         ),
                       ),

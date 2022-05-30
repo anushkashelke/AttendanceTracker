@@ -16,7 +16,7 @@ class Home extends StatefulWidget {
 
   @override
   _HomeState createState() => _HomeState();
-  void markpresent(String uid){
+  void markpresent(String uid) {
     _HomeState().markpresent(uid);
   }
 }
@@ -33,19 +33,23 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-
-    selectDate('${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
-        DateFormat.LLLL().format(selectedDate));
+    //selectDate('${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
+      //  DateFormat.LLLL().format(selectedDate));
     //_startUp();
   }
 
-  void selectDate(String DATE, String MONTH) {
+  /*void selectDate(String DATE, String MONTH) {
     Storagetypes().AddDateToFirebase(MonthName: MONTH, Date: DATE);
     //Storagetypes().MarkasPresent(MonthName: MonthName, Date: Date, StudentId: StudentId)
-  }
-  void markpresent(String UID){
+  } */
+
+  void markpresent(String UID) {
     print("Entered here");
-    Storagetypes().MarkasPresent(MonthName: DateFormat.LLLL().format(selectedDate), Date: '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}', Uid: UID);
+    Storagetypes().AddDateToFirebase(MonthName: DateFormat.LLLL().format(selectedDate), Date: '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}');
+    Storagetypes().MarkasPresent(
+        MonthName: DateFormat.LLLL().format(selectedDate),
+        Date: '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
+        Uid: UID);
   }
 
   /// 1 Obtain a list of the available cameras on the device.
@@ -73,7 +77,7 @@ class _HomeState extends State<Home> {
       loading = value;
     });
   }
-  /*Future<void> _selectDate(BuildContext context) async {
+  /* Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
@@ -87,7 +91,7 @@ class _HomeState extends State<Home> {
         selectDate(Date, Month);
       });
     }
-  } */
+  }  */
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,7 +116,8 @@ class _HomeState extends State<Home> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => AddClass(
-                              cameraDescription: _cameraDescription), //FaceDetect(
+                              cameraDescription:
+                                  _cameraDescription), //FaceDetect(
                           //cameraDescription: cameraDescription),
                         ),
                       );
@@ -217,7 +222,7 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
-            /*Padding(
+            /* Padding(
               padding: const EdgeInsets.all(10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -252,30 +257,33 @@ class _HomeState extends State<Home> {
             ), */
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text('Date: ' +
-                  '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),),
+              child: Text(
+                'Date: ' +
+                    '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
             LottieBuilder.network(
               'https://assets10.lottiefiles.com/packages/lf20_p9cnyffr.json',
-              height: 200.0,
+              height: 150.0,
               repeat: true,
               reverse: true,
               animate: true,
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(10,0, 10, 20),
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
               child: TextButton(
                 onPressed: () {
                   Authentication().SignOut;
-                  Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> Welcome()));
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => Welcome()));
                 },
                 style: ButtonStyle(
                     backgroundColor:
-                    MaterialStateProperty.all(Colors.blue[100])),
+                        MaterialStateProperty.all(Colors.blue[100])),
                 child: Text(
                   'Sign Out',
                   style: TextStyle(

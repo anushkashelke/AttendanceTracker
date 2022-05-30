@@ -114,6 +114,7 @@ class _markAttendanceState extends State<markAttendance> {
         isImageTaken = true;
         imagePath = imgXfile.path;
       });
+
       //reloadCamera();
       return true;
     }
@@ -238,7 +239,7 @@ class _markAttendanceState extends State<markAttendance> {
                             ],
                           ));
                     }
-                  } else if (noFaceDetected) {
+                  } else if (isImageTaken && noFaceDetected) {
                     return Scaffold(
                         backgroundColor: Colors.pink[100],
                         body: Column(

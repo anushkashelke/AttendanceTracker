@@ -18,6 +18,7 @@ class Storagetypes {
   final FaceNetService _faceNetService = FaceNetService();
   //final FaceDetectionThroughTflite _tfliteService = FaceDetectionThroughTflite();
   String Month = '';
+  int TotalDays = 0;
   String date = '';
   Future<String> newStudent({
     required String className,
@@ -159,14 +160,6 @@ class Storagetypes {
     String res = 'Some Error Occured';
     try {
       print("Entered");
-      //if (MonthName!='' && Date!='') {
-      /*modelDate.AddDate Date = modelDate.AddDate(
-          MonthName: MonthName,
-        ); */
-      /*DatabaseReference ref = FirebaseDatabase.instance.ref("Teachers/"+FirebaseAuth.instance.currentUser!.uid);
-        await ref.update({
-          "ClassName": {"Class1":ClassName
-        }}); */
       print(MonthName);
       FirebaseFirestore.instance.collection('Students').doc(Uid).update({
         MonthName: FieldValue.arrayUnion([Date])
@@ -174,13 +167,6 @@ class Storagetypes {
       FirebaseFirestore.instance.collection('Students').doc(Uid).update({
         'Months': FieldValue.arrayUnion([MonthName])
       });
-      /*FirebaseFirestore.instance
-            .collection('Students')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .update({
-          MonthName: FieldValue.arrayUnion([Date])
-        }); */
-      //} else {}
     } catch (err) {
       res = err.toString();
       //print("Error");
@@ -189,25 +175,24 @@ class Storagetypes {
     return res;
   }
 
-  Future<String> DeleteClass({
-    required String ClassName,
-  }) async {
-    String res = "Some Error Occured";
+  Future<int> TotalDaysInMonth(
+  {
+  required String Month,
+  }) async{
+    String res='';
     try {
-      FirebaseFirestore.instance
-          .collection('Teachers')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .update({
-        "ClassName": FieldValue.arrayRemove([ClassName])
-      });
-      var Students = FirebaseFirestore.instance
-          .collection('Students')
-          .where('Uid',
-              isGreaterThanOrEqualTo: FirebaseAuth.instance.currentUser!.uid)
-          .get();
-    } catch (err) {
+      print("Entered");
+      var data = await FirebaseFirestore.instance.collection('Teachers').doc(
+          FirebaseAuth.instance.currentUser!.uid).get();
+      TotalDays = data.data()![Month].length;
+      print("Days");
+      print(TotalDays);
+    }
+    catch(err){
+      print("Some error occured !");
       res = err.toString();
     }
-    return res;
+    return TotalDays;
   }
+
 }
