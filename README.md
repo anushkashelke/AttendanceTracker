@@ -16,7 +16,7 @@ Tensorflow lite - Used to detect and recognize faces
 Firebase Database - Used to Store the Attendance and Student Records 
 
 
-**Preview of the App: **
+**Preview of the App:**
 
 Add New Student:
 
@@ -36,7 +36,7 @@ Attendance Records for each day:
 <img src=https://user-images.githubusercontent.com/84145871/171986643-2889deaf-2cd0-424a-b28d-b7713ddfc81c.jpeg height="300" /> <img src=https://user-images.githubusercontent.com/84145871/171986648-0c4c270a-05c3-412f-85ce-01946bbeab37.jpeg height="300" /> <img src=https://user-images.githubusercontent.com/84145871/171986654-42f62d5e-42aa-42dc-9e93-1f7615afb80f.jpeg height="300" />
 
 
-**Model used for Face Detection: **
+**Model used for Face Detection:**
 
 Face Detection is done through the google ml kit provided by Flutter which uses the HAAR cascade algorithm for face detection.
 
